@@ -88,6 +88,10 @@ const twoP = (counts: number[], isFirstShake: boolean) => {
                 } else {
                     acc[0] = currP;
                 }
+                if (curr >= 4) {
+                    acc[0] = currP;
+                    acc[1] = currP;
+                }
             }
             return acc;
         },
