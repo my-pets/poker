@@ -113,6 +113,10 @@ function App() {
             newTable[19][1] = sums[0].toString();
             newTable[19][2] = sums[1].toString();
             newTable[19][3] = sums[2].toString();
+
+            newTable[19][0] = (sums[0] + sums[1] + sums[2]).toString();
+        } else {
+            setShakeCount(0);
         }
         setTable(newTable);
 
@@ -133,7 +137,6 @@ function App() {
 
         setCombsNumber((prev) => (prev ?? 0) + 1);
         setSavedDices(EMPTY_SAVED_DEICES);
-        setShakeCount(0);
     };
 
     return (
