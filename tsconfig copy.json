@@ -1,0 +1,30 @@
+{
+  "compilerOptions": {
+    "module": "commonjs",
+    "declaration": true,
+    "removeComments": true,
+    "emitDecoratorMetadata": true,
+    "experimentalDecorators": true,
+    "allowSyntheticDefaultImports": true,
+    "target": "es2020",
+    "sourceMap": true,
+    "outDir": "./dist",
+    "baseUrl": "./src",
+    "incremental": true,
+    "skipLibCheck": true,
+    "paths": {
+      "@app/*": ["./*"]
+    },
+    "strict": true,
+    "strictPropertyInitialization": false
+  },
+  "tsc-alias": {
+    "verbose": true,
+    "resolveFullPaths": true,
+    "fileExtensions": {
+      "inputGlob": "js",
+      "outputCheck": ["js"]
+    }
+  },
+  "exclude": ["node_modules", "dist"]
+}
