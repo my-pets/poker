@@ -7,9 +7,10 @@ type DicesType = {
     savedDices: boolean[];
     onSaveDice: (i: number) => void;
     shakeCount: number;
+    isYourTurn: boolean;
 };
 
-export const Dices = ({ dices, shakeHandler, savedDices, onSaveDice, shakeCount }: DicesType) => {
+export const Dices = ({ dices, shakeHandler, savedDices, onSaveDice, shakeCount, isYourTurn }: DicesType) => {
     return (
         <>
             <Box
@@ -41,7 +42,7 @@ export const Dices = ({ dices, shakeHandler, savedDices, onSaveDice, shakeCount 
                 <Dice index={3} dice={dices[3]} isSaved={savedDices[3]} onSaveDice={onSaveDice} />
                 <Dice index={4} dice={dices[4]} isSaved={savedDices[4]} onSaveDice={onSaveDice} />
             </Box>
-            <Button onClick={shakeHandler} disabled={shakeCount === 3}>
+            <Button onClick={shakeHandler} disabled={shakeCount === 3 || !isYourTurn}>
                 <div>Shake</div>
             </Button>
         </>

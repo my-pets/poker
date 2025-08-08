@@ -29,7 +29,7 @@ export const ResultSell = ({ column, row, value, potentialCombination, saveCombi
             {!isPotentianal && (
                 <Box
                     sx={{
-                        color: 'black',
+                        color: '#d19bc8',
                         justifyItems: 'center',
                         height: 20,
                         width: 20,
