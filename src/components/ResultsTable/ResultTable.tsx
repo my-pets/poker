@@ -13,7 +13,7 @@ type ResultTableType = {
     player: PlayerEntity;
 };
 
-const withBottomBorder = [6, 7, 18];
+const withBottomBorder = [5, 6, 17];
 
 export const ResultTable = ({ game, player, isLables }: ResultTableType) => {
     const { combinations } = game.currentDicesInfo as CurrentDicesInfo;
@@ -74,6 +74,7 @@ export const ResultTable = ({ game, player, isLables }: ResultTableType) => {
                             borderBottom: withBottomBorder.includes(index)
                                 ? '1px solid rgba(224, 224, 224, 1)'
                                 : '1px solid rgb(60, 60, 60)',
+                            borderTop: index === 0 ? '1px solid rgba(224, 224, 224, 1)' : undefined
                         }}
                     >
                         {isLables && <ResultSell column={0} row={index} value={row[0]} />}

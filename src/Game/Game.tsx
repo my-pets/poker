@@ -37,16 +37,18 @@ export const Game = ({ gameCode, code }: GameProps) => {
 
     useEffect(() => {
         socket.on('game', (data: GameEntity) => {
-            const you = data.players.find(({ code: playerCode }) => code === playerCode)
+            const you = data.players.find(({ code: playerCode }) => code === playerCode);
 
             setSavedDices(data.currentDicesInfo?.savedDices ?? EMPTY_SAVED_DEICES);
             setGame(data);
             setIsYourTurn(you?.order === data.currentOrder);
         });
-        socket.emit('get-game', {
-            gameCode,
-            code,
-        });
+        if (gameCode && code) {
+            socket.emit('get-game', {
+                gameCode,
+                code,
+            });
+        }
     }, []);
 
     return (
@@ -62,13 +64,19 @@ export const Game = ({ gameCode, code }: GameProps) => {
             />
             {!!game && game.status === GameStatus.IN_PROGRESS && (
                 <TableContainer
-                    sx={{ justifyItems: 'center', userSelect: 'none', display: 'flex', justifyContent: 'center', gap: '1px' }}
+                    sx={{
+                        justifyItems: 'center',
+                        userSelect: 'none',
+                        display: 'flex',
+                        justifyContent: 'center',
+                        gap: '1px',
+                    }}
                     tabIndex={-1}
                 >
                     {game.players
                         .sort((a, b) => (b?.order ?? 0) - (a?.order ?? 0))
                         .map((player, i) => (
-                            <ResultTable key={player.code} game={game} player={player} isLables={i === 0}/>
+                            <ResultTable key={player.code} game={game} player={player} isLables={i === 0} />
                         ))}
                 </TableContainer>
             )}
