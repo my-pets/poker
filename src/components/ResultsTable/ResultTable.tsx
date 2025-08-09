@@ -2,28 +2,28 @@ import Table from '@mui/material/Table';
 import TableBody from '@mui/material/TableBody';
 import TableRow from '@mui/material/TableRow';
 import { ResultSell } from './ResultSell';
-import { CurrentDicesInfo, GameEntity } from '../../socket/entities/game.entity';
 import { CurrentPlayerInfo, PlayerEntity } from '../../socket/entities/player.entity';
 import { socket } from '../../socket/socket';
 import { TableCell, TableHead } from '@mui/material';
 
 type ResultTableType = {
     isLables?: boolean;
-    game: GameEntity;
     player: PlayerEntity;
+    gameCode: string;
+    currentOrder?: number;
+    combinations?: number[];
 };
 
 const withBottomBorder = [5, 6, 17];
 
-export const ResultTable = ({ game, player, isLables }: ResultTableType) => {
-    const { combinations } = game.currentDicesInfo as CurrentDicesInfo;
+export const ResultTable = ({ player, isLables, combinations, gameCode, currentOrder }: ResultTableType) => {
     const { downIndex, upIndex } = player.currentPlayerInfo as CurrentPlayerInfo;
     const table = player.table;
-    const isTurn = game.currentOrder === player.order;
+    const isTurn = currentOrder === player.order;
 
     const onSaveCombination = (column: number, row: number) => {
         socket.emit('save-combination', {
-            gameCode: game.code,
+            gameCode: gameCode,
             code: player.code,
             column,
             row,
@@ -82,21 +82,21 @@ export const ResultTable = ({ game, player, isLables }: ResultTableType) => {
                             column={1}
                             row={index}
                             value={row[1]}
-                            potentialCombination={downIndex === index && isTurn ? combinations[index] : undefined}
+                            potentialCombination={downIndex === index && isTurn ? combinations?.[index] : undefined}
                             saveCombination={downIndex === index && isTurn ? onSaveCombination : undefined}
                         />
                         <ResultSell
                             column={2}
                             row={index}
                             value={row[2]}
-                            potentialCombination={isTurn ? combinations[index] : undefined}
+                            potentialCombination={isTurn ? combinations?.[index] : undefined}
                             saveCombination={isTurn ? onSaveCombination : undefined}
                         />
                         <ResultSell
                             column={3}
                             row={index}
                             value={row[3]}
-                            potentialCombination={upIndex === index && isTurn ? combinations[index] : undefined}
+                            potentialCombination={upIndex === index && isTurn ? combinations?.[index] : undefined}
                             saveCombination={upIndex === index && isTurn ? onSaveCombination : undefined}
                         />
                     </TableRow>

@@ -1,10 +1,11 @@
 import React, { useRef, useState } from 'react';
-import { Box, TextField, Typography, Button } from '@mui/material';
+import { Box, TextField, Typography, Button, Switch, ToggleButtonGroup, ToggleButton } from '@mui/material';
 import { getRandomCode } from './helper';
 import { OverflowDialog } from '../components/OverflowDialog';
+import './Login.css';
 
 const colors = ['#FFD700', '#FF0000', '#1E90FF', '#32CD32', '#9370DB'];
-const length = 5
+const length = 5;
 
 type LoginProps = {
     existedGameCode?: string[];
@@ -17,6 +18,7 @@ export const Login = ({ existedGameCode, existedCode, onSubmit }: LoginProps) =>
         existedGameCode?.length === length ? existedGameCode : Array(length).fill(''),
     );
     const [playerCode, setPlayerCode] = useState(existedCode ?? '');
+    const [isCodeChange, setIsCodeChange] = useState(!existedCode);
     const [playersCount, setPlayersCount] = useState(2);
     const [isNew, setIsNew] = useState(true);
 
@@ -64,7 +66,7 @@ export const Login = ({ existedGameCode, existedCode, onSubmit }: LoginProps) =>
 
     const isGameCodeValid = gameCode.every((char) => char !== '');
     const isPlayerCodeValid = playerCode.length >= 3 && playerCode.length <= 30;
-    const isPlayersCountValid = playersCount >= 1 && playersCount <= 4;
+    const isPlayersCountValid = playersCount >= 1 && playersCount <= 5;
 
     const handleEnter = () => {
         if (!isGameCodeValid || !isPlayerCodeValid) {
@@ -85,7 +87,9 @@ export const Login = ({ existedGameCode, existedCode, onSubmit }: LoginProps) =>
     };
 
     return (
-        <OverflowDialog triggerLabel="Новая игра">
+        <OverflowDialog
+            triggerLabel={existedGameCode && existedCode ? `${existedGameCode.join('')} ${existedCode}` : 'Новая игра'}
+        >
             <Box sx={{ display: 'flex', flexDirection: 'column', gap: 3, width: 400, margin: '0 auto' }}>
                 {/* Код игры */}
                 {!isNew && (
@@ -107,7 +111,7 @@ export const Login = ({ existedGameCode, existedCode, onSubmit }: LoginProps) =>
                                 }}
                                 sx={{
                                     backgroundColor: colors[i],
-                                    margin: "2px",
+                                    margin: '2px',
                                     borderRadius: 1,
                                 }}
                             />
@@ -115,30 +119,51 @@ export const Login = ({ existedGameCode, existedCode, onSubmit }: LoginProps) =>
                     </Box>
                 )}
 
-                <Box>
-                    <Typography variant="subtitle1" gutterBottom>
-                        Ваш ник
-                    </Typography>
-                    <TextField
-                        fullWidth
-                        value={playerCode}
-                        onChange={(e) => setPlayerCode(e.target.value)}
-                        error={!isPlayerCodeValid && playerCode.length > 0}
-                        helperText={!isPlayerCodeValid && playerCode.length > 0 ? 'От 3 до 30 символов' : ''}
-                    />
-                </Box>
+                {isCodeChange && (
+                    <Box>
+                        <Typography variant="subtitle1" gutterBottom>
+                            Ваш ник
+                        </Typography>
+                        <TextField
+                            fullWidth
+                            value={playerCode}
+                            onChange={(e) => setPlayerCode(e.target.value)}
+                            error={!isPlayerCodeValid && playerCode.length > 0}
+                            helperText={!isPlayerCodeValid && playerCode.length > 0 ? 'От 3 до 30 символов' : ''}
+                        />
+                    </Box>
+                )}
 
                 {isNew && (
                     <Box>
                         <Typography variant="subtitle1" gutterBottom>
                             Количество игроков
                         </Typography>
-                        <TextField
-                            type="number"
+                        <ToggleButtonGroup
                             value={playersCount}
-                            onChange={(e) => setPlayersCount(Number(e.target.value))}
-                            inputProps={{ min: 2, max: 10 }}
-                        />
+                            exclusive
+                            onChange={(e, newVal) => {
+                                if (newVal !== null) setPlayersCount(newVal);
+                            }}
+                            aria-label="select one option"
+                            size="small"
+                        >
+                            {[1, 2, 3, 4, 5].map((opt, i) => (
+                                <div
+                                    key={opt}
+                                    className='players-count-item'
+                                    style={{
+                                        backgroundColor: colors[i],
+                                        width: opt === playersCount ? '38px' : '30px',
+                                        height: opt === playersCount ? '38px' : '30px',
+                                        margin: opt === playersCount ? '0 5px' : '5px'
+                                    }}
+                                    onClick={() => setPlayersCount(opt)}
+                                >
+                                        {opt}
+                                </div>
+                            ))}
+                        </ToggleButtonGroup>
                     </Box>
                 )}
 
@@ -159,6 +184,8 @@ export const Login = ({ existedGameCode, existedCode, onSubmit }: LoginProps) =>
                 <Button variant="text" onClick={() => setIsNew((prev) => !prev)}>
                     {isNew ? 'Есть код? Войти в игру здесь' : 'Начать новую игру?'}
                 </Button>
+
+                <Switch checked={isCodeChange} onChange={() => setIsCodeChange((prev) => !prev)} />
             </Box>
         </OverflowDialog>
     );
