@@ -62,7 +62,7 @@ export const ResultTable = ({ player, isLables, combinations, gameCode, currentO
                             fontSize: '18px',
                             backgroundColor: isTurn ? '#4e2647' : undefined
                         }}>
-                        {player.code} {table?.[16]?.[0] ?? ''}
+                        {player.code} {table?.[18]?.[0] ?? ''}
                     </TableCell>
                 </TableRow>
             </TableHead>
