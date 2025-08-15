@@ -7,6 +7,7 @@ export type EnterGame = {
 };
 
 export const sendEnterGame = (data: EnterGame) => {
+    console.log('sending')
     socket.emit('enter-the-game', data);
 };
 

@@ -89,6 +89,31 @@ export const Login = ({ existedGameCode, existedCode, onSubmit }: LoginProps) =>
     return (
         <OverflowDialog
             triggerLabel={existedGameCode && existedCode ? `${existedGameCode.join('')} ${existedCode}` : 'Новая игра'}
+            confirmComponent={(handleConfirm) =>
+                isNew ? (
+                    <Button
+                        variant="contained"
+                        onClick={() => {
+                            handleNew();
+                            handleConfirm();
+                        }}
+                        disabled={!isPlayerCodeValid || !isPlayersCountValid}
+                    >
+                        Создать игру
+                    </Button>
+                ) : (
+                    <Button
+                        variant="contained"
+                        onClick={() => {
+                            handleEnter();
+                            handleConfirm();
+                        }}
+                        disabled={!isGameCodeValid || !isPlayerCodeValid}
+                    >
+                        Войти в игру
+                    </Button>
+                )
+            }
         >
             <Box sx={{ display: 'flex', flexDirection: 'column', gap: 3, width: 400, margin: '0 auto' }}>
                 {/* Код игры */}
@@ -122,7 +147,7 @@ export const Login = ({ existedGameCode, existedCode, onSubmit }: LoginProps) =>
                 {isCodeChange && (
                     <Box>
                         <Typography variant="subtitle1" gutterBottom>
-                            Ваш ник
+                            Ваше имя
                         </Typography>
                         <TextField
                             fullWidth
@@ -151,41 +176,31 @@ export const Login = ({ existedGameCode, existedCode, onSubmit }: LoginProps) =>
                             {[1, 2, 3, 4, 5].map((opt, i) => (
                                 <div
                                     key={opt}
-                                    className='players-count-item'
+                                    className="players-count-item"
                                     style={{
                                         backgroundColor: colors[i],
                                         width: opt === playersCount ? '38px' : '30px',
                                         height: opt === playersCount ? '38px' : '30px',
-                                        margin: opt === playersCount ? '0 5px' : '5px'
+                                        margin: opt === playersCount ? '0 5px' : '5px',
                                     }}
                                     onClick={() => setPlayersCount(opt)}
                                 >
-                                        {opt}
+                                    {opt}
                                 </div>
                             ))}
                         </ToggleButtonGroup>
                     </Box>
                 )}
-
-                {isNew ? (
-                    <Button
-                        variant="contained"
-                        onClick={handleNew}
-                        disabled={!isPlayerCodeValid || !isPlayersCountValid}
-                    >
-                        Создать игру
-                    </Button>
-                ) : (
-                    <Button variant="contained" onClick={handleEnter} disabled={!isGameCodeValid || !isPlayerCodeValid}>
-                        Войти в игру
-                    </Button>
-                )}
-
                 <Button variant="text" onClick={() => setIsNew((prev) => !prev)}>
                     {isNew ? 'Есть код? Войти в игру здесь' : 'Начать новую игру?'}
                 </Button>
 
-                <Switch checked={isCodeChange} onChange={() => setIsCodeChange((prev) => !prev)} />
+                <Box sx={{ display: 'flex', alignItems: 'end' }}>
+                    <Switch checked={isCodeChange} onChange={() => setIsCodeChange((prev) => !prev)} />
+                    <Typography variant="subtitle1" gutterBottom>
+                        Сменить имя
+                    </Typography>
+                </Box>
             </Box>
         </OverflowDialog>
     );

@@ -9,6 +9,7 @@ type OverflowDialogProps = {
     children: React.JSX.Element;
     triggerComponent?: () => React.JSX.Element;
     triggerLabel?: string;
+    confirmComponent?: (handleConfirm: () => void) => React.JSX.Element;
     title?: string;
     onConfirm?: () => void;
     onCancel?: () => void;
@@ -18,6 +19,7 @@ type OverflowDialogProps = {
 export const OverflowDialog = ({
     children,
     triggerComponent,
+    confirmComponent,
     triggerLabel,
     title,
     onConfirm,
@@ -67,6 +69,7 @@ export const OverflowDialog = ({
                             Сохранить
                         </Button>
                     )}
+                    {!!confirmComponent && confirmComponent(handleConfirm)}
                 </DialogActions>
             </Dialog>
         </React.Fragment>

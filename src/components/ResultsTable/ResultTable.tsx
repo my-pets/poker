@@ -49,7 +49,7 @@ export const ResultTable = ({ player, isLables, combinations, gameCode, currentO
             aria-label="simple table"
             size="small"
             tabIndex={-1}
-            title={`${player.code} ${table?.[0]?.[17] ?? ''}`}
+            title={`${player.code} ${table?.[0]?.[16] ?? ''}`}
         >
             <TableHead>
                 <TableRow>

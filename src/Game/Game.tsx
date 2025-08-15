@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import { Dices } from '../components/Dices/Dices';
 import { ResultTable } from '../components/ResultsTable/ResultTable';
 import useLocalStorage from 'use-local-storage';
@@ -24,6 +24,8 @@ export const Game = ({ gameCode, code, playersCount }: GameProps) => {
     const [game, setGame] = useState<GameEntity | null>(null);
     const [currentDicesInfo, setCurrentDicesInfo] = useState<CurrentDicesInfo | undefined>(undefined);
 
+    const joinedRef = useRef(false);
+
     const onShake = () => {
         socket.emit('shake', {
             gameCode,
@@ -42,6 +44,7 @@ export const Game = ({ gameCode, code, playersCount }: GameProps) => {
         socket.on('game', (data: GameEntity) => {
             const you = data.players.find(({ code: playerCode }) => code === playerCode);
 
+            console.log(data);
             setSavedDices(data.currentDicesInfo?.savedDices ?? EMPTY_SAVED_DEICES);
             setGame(data);
             setIsYourTurn(you?.order === data.currentOrder);
@@ -52,16 +55,30 @@ export const Game = ({ gameCode, code, playersCount }: GameProps) => {
             setCurrentDicesInfo(data);
         });
         socket.on('connect', () => {
-            console.log('Connected:', socket.id);
-            if (gameCode && code) {
+            if ((!joinedRef.current && gameCode && code) || (joinedRef.current && gameCode && code && !game)) {
                 sendEnterGame({
                     gameCode,
                     code,
                     playersCount,
                 });
+                console.log('try to enter the game');
+                joinedRef.current = true;
             }
         });
     }, []);
+
+    useEffect(() => {
+        console.log('useEffect')
+        if ((!joinedRef.current && gameCode && code) || (joinedRef.current && gameCode && code && (!game || game.code !== gameCode))) {
+            sendEnterGame({
+                gameCode,
+                code,
+                playersCount,
+            });
+            console.log('try to enter the game');
+            joinedRef.current = true;
+        }
+    }, [gameCode, code]);
 
     return (
         <div>
@@ -86,7 +103,7 @@ export const Game = ({ gameCode, code, playersCount }: GameProps) => {
                     tabIndex={-1}
                 >
                     {game.players
-                        .sort((a, b) => (b?.order ?? 0) - (a?.order ?? 0))
+                        .sort((a, b) => (a?.order ?? 0) - (b?.order ?? 0))
                         .map((player, i) => (
                             <ResultTable
                                 key={player.code}
