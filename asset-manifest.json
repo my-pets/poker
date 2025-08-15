@@ -1,7 +1,7 @@
 {
   "files": {
     "main.css": "/poker/static/css/main.362c64d1.css",
-    "main.js": "/poker/static/js/main.847acbbd.js",
+    "main.js": "/poker/static/js/main.61423723.js",
     "index.html": "/poker/index.html",
     "static/media/green-6.svg": "/poker/static/media/green-6.147810076c37724375f29a77dad3b4c1.svg",
     "static/media/purple-6.svg": "/poker/static/media/purple-6.72daa037873df367d735177c2a950cec.svg",
@@ -34,10 +34,10 @@
     "static/media/yellow-1.svg": "/poker/static/media/yellow-1.961ffcddff880f1c52bdd50037bc3577.svg",
     "static/media/blue-1.svg": "/poker/static/media/blue-1.a7f0232a0e45dfda9ca86d761f099d69.svg",
     "main.362c64d1.css.map": "/poker/static/css/main.362c64d1.css.map",
-    "main.847acbbd.js.map": "/poker/static/js/main.847acbbd.js.map"
+    "main.61423723.js.map": "/poker/static/js/main.61423723.js.map"
   },
   "entrypoints": [
     "static/css/main.362c64d1.css",
-    "static/js/main.847acbbd.js"
+    "static/js/main.61423723.js"
   ]
 }
